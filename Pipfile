@@ -8,6 +8,12 @@ django = "*"
 django-rest-framework = "*"
 celery = "*"
 django-environ = "*"
+django-extensions = "*"
+django-model-utils = "*"
+isort = "*"
+black = "*"
+flake8 = "*"
+pre-commit = "*"
 
 [dev-packages]
 
