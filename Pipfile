@@ -17,6 +17,7 @@ djangorestframework = "*"
 redis = "*"
 flower = "*"
 celery = "*"
+sendgrid = "*"
 
 [dev-packages]
 
