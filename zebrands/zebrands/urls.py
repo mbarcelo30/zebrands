@@ -14,37 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import include, path, re_path
 
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view
 from rest_framework import permissions, routers
+from rest_framework.authtoken.views import obtain_auth_token
 from store.views import ProductViewSet
+from users.views import UserViewSet
 
 router = routers.DefaultRouter()
 router.register(r"products", ProductViewSet, basename="products")
-
-schema_view = get_schema_view(
-    openapi.Info(
-        title="Store API",
-        default_version="v1",
-        description="Test description",
-        contact=openapi.Contact(email="mauricio@challenge.com"),
-        license=openapi.License(name="BSD License"),
-    ),
-    public=True,
-    permission_classes=[permissions.AllowAny],
-)
+router.register(r"users", UserViewSet, basename="users")
 
 
 urlpatterns = router.urls + [
-    re_path(
-        r"^doc/$",
-        schema_view.with_ui("swagger", cache_timeout=0),
-        name="schema-swagger-ui",
-    ),
-    re_path(
-        r"^redoc/$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"
-    ),
+    # DRF Authentication
+    path("token/", obtain_auth_token, name="api_token_auth"),
+    # Django admin
     path("admin/", admin.site.urls),
 ]
