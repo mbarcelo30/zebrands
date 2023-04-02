@@ -145,3 +145,5 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication"
     ],
 }
+
+CELERY_BROKER_URL = env("REDIS_URL", default="redis://localhost:6380")

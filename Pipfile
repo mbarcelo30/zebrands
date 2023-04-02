@@ -15,6 +15,7 @@ black = "*"
 flake8 = "*"
 pre-commit = "*"
 djangorestframework = "*"
+redis = "*"
 
 [dev-packages]
 
