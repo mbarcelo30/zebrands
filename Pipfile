@@ -15,7 +15,6 @@ black = "*"
 flake8 = "*"
 pre-commit = "*"
 djangorestframework = "*"
-drf-yasg = "*"
 
 [dev-packages]
 
