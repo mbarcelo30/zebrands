@@ -13,3 +13,11 @@ class Product(TimeStampedModel):
 
     def __str__(self):
         return f"{self.sku} - {self.brand} - {self.name}"
+
+
+class ProductStats(TimeStampedModel):
+    product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    view_count = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.product} - {self.view_count}"
