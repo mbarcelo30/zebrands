@@ -16,7 +16,9 @@ class Product(TimeStampedModel):
 
 
 class ProductStats(TimeStampedModel):
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    product = models.OneToOneField(
+        Product, on_delete=models.CASCADE, related_name="stats"
+    )
     view_count = models.IntegerField(default=0)
 
     def __str__(self):
