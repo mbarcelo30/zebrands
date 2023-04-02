@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 django = "*"
 django-rest-framework = "*"
-celery = "*"
 django-environ = "*"
 django-extensions = "*"
 django-model-utils = "*"
@@ -16,6 +15,8 @@ flake8 = "*"
 pre-commit = "*"
 djangorestframework = "*"
 redis = "*"
+flower = "*"
+celery = "*"
 
 [dev-packages]
 
