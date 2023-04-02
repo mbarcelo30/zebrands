@@ -146,4 +146,5 @@ REST_FRAMEWORK = {
     ],
 }
 
-CELERY_BROKER_URL = env("REDIS_URL", default="redis://localhost:6380")
+CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://localhost:6380/0")
+CELERY_RESULT_BACKEND = env("CELERY_BROKER_URL", default="redis://localhost:6380/0")
