@@ -148,3 +148,14 @@ REST_FRAMEWORK = {
 
 CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://localhost:6380/0")
 CELERY_RESULT_BACKEND = env("CELERY_BROKER_URL", default="redis://localhost:6380/0")
+
+# Sendgrid Config
+
+SENDGRID_FROM_EMAIL = env("SENDGRID_FROM_EMAIL", default="test@challenge.com")
+SENDGRID_API_KEY = env(
+    "SENDGRID_API_KEY",
+    default="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",
+)
+PRODUCT_UPDATE_EMAIL_ID = env(
+    "PRODUCT_UPDATE_EMAIL_ID", default="d-9881f9739e864b2ea3ef852ae1942530"
+)
