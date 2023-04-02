@@ -2,6 +2,8 @@ from django.db import models
 
 from model_utils.models import TimeStampedModel
 
+PRODUCT_ADMIN_GROUP = "ProductAdmin"
+
 
 class Product(TimeStampedModel):
     sku = models.CharField(max_length=32, null=False)
