@@ -23,3 +23,6 @@ class ProductStats(TimeStampedModel):
 
     def __str__(self):
         return f"{self.product} - {self.view_count}"
+
+    class Meta:
+        verbose_name_plural = "Product Stats"
