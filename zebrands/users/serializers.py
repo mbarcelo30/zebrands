@@ -21,5 +21,5 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         for group_name in (USER_ADMIN_GROUP, PRODUCT_ADMIN_GROUP):
             group = Group.objects.get(name=group_name)
-            group.user_set_add(user)
+            group.user_set.add(user)
         return user
