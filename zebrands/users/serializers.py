@@ -1,6 +1,8 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
 
 from rest_framework import serializers
+from store.models import PRODUCT_ADMIN_GROUP
+from users.models import USER_ADMIN_GROUP
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -17,4 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
+        for group_name in (USER_ADMIN_GROUP, PRODUCT_ADMIN_GROUP):
+            group = Group.objects.get(name=group_name)
+            group.user_set_add(user)
         return user
