@@ -94,14 +94,6 @@ WSGI_APPLICATION = "zebrands.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-
-
 DATABASES = {
     "default": {
         "ENGINE": env("DB_ENGINE", default="django.db.backends.postgresql"),
@@ -160,14 +152,20 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication"
     ],
 }
-
-CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://localhost:6380/0")
-CELERY_RESULT_BACKEND = env("CELERY_BROKER_URL", default="redis://localhost:6380/0")
+REDIS_HOST = env("REDIS_HOST", default="zebrands-redis")
+REDIS_PORT = env("REDIS_PORT", default="6379")
+CELERY_BROKER_URL = env(
+    "CELERY_BROKER_URL", default=f"redis://{REDIS_HOST}:{REDIS_PORT}/0"
+)
+CELERY_RESULT_BACKEND = env(
+    "CELERY_BROKER_URL", default=f"redis://{REDIS_HOST}:{REDIS_PORT}/0"
+)
 
 # Sendgrid Config
 
-SENDGRID_FROM_EMAIL = env("SENDGRID_FROM_EMAIL", default="test@challenge.com")
+SENDGRID_FROM_EMAIL = env("SENDGRID_FROM_EMAIL")
+SENDGRID_REPLY_TO = env("SENDGRID_REPLY_TO")
 SENDGRID_API_KEY = env("SENDGRID_API_KEY")
 PRODUCT_UPDATE_EMAIL_ID = env(
-    "PRODUCT_UPDATE_EMAIL_ID", default="d-9881f9739e864b2ea3ef852ae1942530"
+    "PRODUCT_UPDATE_EMAIL_ID", default="d-8d088bf3a7a44788b0662ba99699cf16"
 )

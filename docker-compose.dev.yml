@@ -1,0 +1,109 @@
+version: '3.7'
+
+services:
+  database:
+    build:
+      context: ./database
+      dockerfile: ./Dockerfile
+    image: zebrands-db
+    container_name: zebrands-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: zuser
+      POSTGRES_PASSWORD: zpass1234
+      POSTGRES_DB: zebrands
+    ports:
+      - '5433:5432'
+    volumes:
+      - ./database/data/:/var/lib/postgresql/data/
+    networks:
+      zebrands-net:
+        ipv4_address: 10.6.0.2
+
+  zebrands-redis:
+    build:
+      context: ./redis
+      dockerfile: ./Dockerfile
+    image: zebrands-redis
+    container_name: zebrands-redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    networks:
+      zebrands-net:
+        ipv4_address: 10.6.0.3
+
+  zebrands-api:
+    build:
+      context: ./zebrands
+      dockerfile: ./Dockerfile
+    command: >
+      bash -c "pipenv install && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    image: zebrands-api
+    container_name: zebrands-api
+    volumes:
+      - type: bind
+        source: ./zebrands
+        target: /code
+    ports:
+      - '8000:8000'
+    depends_on:
+      - database
+      - zebrands-redis
+    restart: unless-stopped
+    networks:
+      zebrands-net:
+        ipv4_address: 10.6.0.4
+
+  zebrands-celery:
+    build:
+      context: ./zebrands
+      dockerfile: ./Dockerfile
+    command: >
+      bash -c "./run_celery.sh"
+    image: zebrands-celery
+    container_name: zebrands-celery
+    volumes:
+      - type: bind
+        source: ./zebrands
+        target: /code
+    depends_on:
+      - database
+      - zebrands-api
+      - zebrands-redis
+    networks:
+      zebrands-net:
+        ipv4_address: 10.6.0.5
+
+  zebrands-flower:
+    build:
+      context: ./zebrands
+      dockerfile: ./Dockerfile
+    command: >
+      bash -c "celery -A zebrands flower --basic_auth=admin:admin"
+    image: zebrands-flower
+    container_name: zebrands-flower
+    ports:
+      - '5555:5555'
+    environment:
+      ENVIRONMENT: 'local'
+    volumes:
+      - type: bind
+        source: ./zebrands
+        target: /code
+    depends_on:
+      - database
+      - zebrands-redis
+    restart: unless-stopped
+    networks:
+      zebrands-net:
+        ipv4_address: 10.6.0.6
+
+
+
+networks:
+  zebrands-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.6.0.0/16

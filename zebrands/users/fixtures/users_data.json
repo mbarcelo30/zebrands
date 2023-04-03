@@ -1,0 +1,60 @@
+[
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "username": "admin@admin.com",
+            "password": "pbkdf2_sha256$390000$zXooOUXDlE7jmLjKANid5L$Djkl+7AIWtI6pyn9E7Dijwp/1RFi9cU5f29+neWWMyA=",
+            "first_name": "Admin",
+            "last_name": "Admin",
+            "email": "admin@admin.com",
+            "is_staff": true,
+            "is_superuser": true,
+            "is_active": true
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 2,
+        "fields": {
+            "username": "test1",
+            "password": "pbkdf2_sha256$390000$zXooOUXDlE7jmLjKANid5L$Djkl+7AIWtI6pyn9E7Dijwp/1RFi9cU5f29+neWWMyA=",
+            "first_name": "Test",
+            "last_name": "Test",
+            "email": "test1@test.com",
+            "is_staff": false,
+            "is_superuser": false,
+            "is_active": true
+        }
+    },
+    {
+        "model": "auth.group",
+        "pk": 1,
+        "fields": {
+            "name": "ProductAdmin"
+        }
+    },
+    {
+        "model": "auth.group",
+        "pk": 2,
+        "fields": {
+            "name": "UserAdmin"
+        }
+    },
+    {
+        "model": "auth.user_groups",
+        "pk": 1,
+        "fields": {
+            "user": 2,
+            "group": 1
+        }
+    },
+    {
+        "model": "auth.user_groups",
+        "pk": 2,
+        "fields": {
+            "user": 2,
+            "group": 2
+        }
+    }
+]
