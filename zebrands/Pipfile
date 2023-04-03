@@ -18,6 +18,7 @@ redis = "*"
 flower = "*"
 celery = "*"
 sendgrid = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
