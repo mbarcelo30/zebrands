@@ -53,7 +53,10 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
 ]
 
-LOCAL_APPS = ["store"]
+LOCAL_APPS = [
+    "store",
+    "users",
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -91,10 +94,22 @@ WSGI_APPLICATION = "zebrands.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": env("DB_ENGINE", default="django.db.backends.postgresql"),
+        "NAME": env("DB_NAME", default="zebrands"),
+        "USER": env("DB_USER", default="zuser"),
+        "PASSWORD": env("DB_PASSWORD", default="zpass1234"),
+        "HOST": env("DB_HOST", default="database"),
+        "POST": env.int("DB_POST", default=5433),
     }
 }
 
