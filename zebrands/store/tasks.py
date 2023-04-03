@@ -13,7 +13,7 @@ from zebrands import celery_app
 log = logging.getLogger()
 
 
-def send_emails(client, user, product):
+def send_emails(sg, user, product):
     kwargs = {
         "username": f"{user.first_name} {user.last_name}",
         "name": product.name,
@@ -26,7 +26,7 @@ def send_emails(client, user, product):
     message.dynamic_template_data = kwargs
     message.template_id = settings.PRODUCT_UPDATE_EMAIL_ID
     try:
-        response = client.send(message)
+        response = sg.send(message)
     except Exception as error:
         log.exception(error)
         return False
@@ -54,8 +54,7 @@ def product_change_notification(sku):
     admins = Group.objects.get(name=PRODUCT_ADMIN_GROUP)
     users = admins.user_set.all()
     for user in users:
-        # send_emails(sg, user, product)
-        pass
+        send_emails(sg, user, product)
 
 
 @celery_app.task
