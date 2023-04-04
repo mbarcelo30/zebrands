@@ -19,6 +19,7 @@ flower = "*"
 celery = "*"
 sendgrid = "*"
 psycopg2-binary = "*"
+drf-spectacular = "*"
 
 [dev-packages]
 

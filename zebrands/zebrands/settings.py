@@ -51,6 +51,7 @@ THIRD_PARTY_APPS = [
     "django_extensions",
     "rest_framework",
     "rest_framework.authtoken",
+    "drf_spectacular",
 ]
 
 LOCAL_APPS = [
@@ -151,6 +152,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication"
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 REDIS_HOST = env("REDIS_HOST", default="zebrands-redis")
 REDIS_PORT = env("REDIS_PORT", default="6379")
@@ -169,3 +171,11 @@ SENDGRID_API_KEY = env("SENDGRID_API_KEY")
 PRODUCT_UPDATE_EMAIL_ID = env(
     "PRODUCT_UPDATE_EMAIL_ID", default="d-8d088bf3a7a44788b0662ba99699cf16"
 )
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Product List API",
+    "DESCRIPTION": "API documentation for Zebrands Challenge",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_REQUEST": True,
+}

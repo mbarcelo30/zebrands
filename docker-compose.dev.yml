@@ -94,6 +94,7 @@ services:
     depends_on:
       - database
       - zebrands-redis
+      - zebrands-api
     restart: unless-stopped
     networks:
       zebrands-net:
