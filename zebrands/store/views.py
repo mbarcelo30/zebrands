@@ -32,7 +32,8 @@ class ProductViewSet(ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        if not request.user.is_authenticated:
+        is_authenticated = request.user.is_authenticated
+        if not is_authenticated:
             product_update_counter.delay(instance.sku)
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
