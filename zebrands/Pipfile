@@ -20,6 +20,11 @@ celery = "*"
 sendgrid = "*"
 psycopg2-binary = "*"
 drf-spectacular = "*"
+factory-boy = "*"
+pytest = "*"
+pytest-django = "*"
+pytest-mock = "*"
+ipdb = "*"
 
 [dev-packages]
 
