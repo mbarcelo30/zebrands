@@ -1,2 +1,20 @@
-# zebrands
-Zebrands Challenge
+# Zebrands
+
+
+## How to run
+
+- Search for the file *zebrands/dotenv.template* and rename it as ".env".
+Complete the environment on your ".env" file.
+- Create your data directory on database folder:
+    `mkdir ./database/data`
+- On root folder run the command
+  `docker-compose -f docker-compose.dev.yml up`
+- Once the server is up and running, it is necessary to load the fixtures.
+    `python manage.py loaddata users`
+
+
+## Importants URLS
+
+- [0.0.0.0:8000/api/doc/](https://) The doc of the project
+- [0.0.0.0:8000/admin/](https://) Django admin
+- [0.0.0.0:5555](https://) Flower
