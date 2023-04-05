@@ -1,0 +1,6 @@
+DEBUG=True
+SECRET_KEY=<django secret key>
+ADMIN_PASSWORD=<the_password>
+SENDGRID_API_KEY=<SengridAPI KEy>
+SENDGRID_FROM_EMAIL=<Validated sengrid email>
+SENDGRID_REPLY_TO=Validated sengrid email
