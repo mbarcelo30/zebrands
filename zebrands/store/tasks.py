@@ -14,6 +14,18 @@ log = logging.getLogger()
 
 
 def send_emails(sg, user, product):
+    """
+    Sends an email to the given user about the updated product.
+
+    Constructs an email message with the updated product information and sends it to the user's email address.
+
+    @param sg: (SendGridAPIClient) The SendGrid client to use for sending the email.
+    @param user: The user to send the email to.
+    @param product: The updated product.
+
+    @return:
+    - bool: True if the email was sent successfully, False otherwise.
+    """
     kwargs = {
         "username": f"{user.first_name} {user.last_name}",
         "name": product.name,
@@ -49,6 +61,16 @@ def send_emails(sg, user, product):
 
 @celery_app.task
 def product_change_notification(sku):
+    """
+    Sends an email notification to all users in the 'Product Admin' group about a product update.
+
+    Retrieves the product with the given SKU from the database, and sends an email notification to all users
+    in the 'Product Admin' group with information about the updated product.
+
+    @param sku: The SKU of the updated product.
+
+    @return None
+    """
     product = Product.objects.get(sku=sku)
     sg = SendGridAPIClient(api_key=settings.SENDGRID_API_KEY)
     admins = Group.objects.get(name=PRODUCT_ADMIN_GROUP)
@@ -59,6 +81,16 @@ def product_change_notification(sku):
 
 @celery_app.task
 def product_update_counter(sku):
+    """
+    Updates the view count for a product.
+
+    Retrieves the product with the given SKU from the database, and increments its view count by 1.
+    If the product does not yet have a ProductStats object associated with it, one is created.
+
+    @param sku: The SKU of the product to update.
+
+    @return None
+    """
     product = Product.objects.get(sku=sku)
     if hasattr(product, "stats"):
         stat = product.stats
