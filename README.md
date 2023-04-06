@@ -10,7 +10,9 @@ Complete the environment on your ".env" file.
 - On root folder run the command
   `docker-compose -f docker-compose.dev.yml up`
 - Once the server is up and running, it is necessary to load the fixtures.
+
     `$ docker exec -it zebrands-api /bin/bash`
+    
     `$ python manage.py loaddata users`
 
 
