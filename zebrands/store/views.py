@@ -15,12 +15,10 @@ class ProductAdminOnly(BasePermission):
         """
         Returns True if the user making the request is a member of the 'ProductAdmin' group.
 
-        Args:
-        - request: The HTTP request object.
-        - view: The view object associated with the request.
+        @param request: The HTTP request object.
+        @param view: The view object associated with the request.
 
-        Returns:
-        True if the user is a member of the 'ProductAdmin' group, False otherwise.
+        @return: True if the user is a member of the 'ProductAdmin' group, False otherwise.
         """
         user = request.user
         return user.groups.filter(name=PRODUCT_ADMIN_GROUP).exists()
@@ -48,8 +46,7 @@ class ProductViewSet(ModelViewSet):
         For non-authenticated users, the 'list' and 'retrieve' actions are allowed.
         For authenticated users, only those in the 'ProductAdmin' group are allowed to access other actions.
 
-        @return:
-        A list of permission objects.
+        @return: A list of permission objects.
         """
         if self.action in ("retrieve", "list"):
             # Allow anonymous users to access the retrieve method
@@ -65,8 +62,7 @@ class ProductViewSet(ModelViewSet):
 
         If the user is not authenticated, updates the product's view counter by scheduling a task using Celery.
 
-        Returns:
-        A response object containing the serialized product instance data.
+        @return: A response object containing the serialized product instance data.
         """
         instance = self.get_object()
         is_authenticated = request.user.is_authenticated
