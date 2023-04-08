@@ -109,20 +109,44 @@ def test_retrieve_product_auth(client, product, mocker):
 
 
 def test_create_product_no_group_permission(client, product):
+    """
+    Test function to verify that a user without group permission cannot create a product.
+
+    @param client: The Django test client object.
+    @param product: The Product object to be created.
+    @return: None
+    """
+
     data = {
         "sku": product.sku,
         "name": product.name,
         "price": str(product.price),
         "brand": product.brand,
     }
+
+    # Set the expected HTTP response code to 403 (FORBIDDEN)
     expected = status.HTTP_403_FORBIDDEN
+
+    # Send a POST request to the 'products-list' endpoint with the product data
     response = client.post(reverse("products-list"), data=data)
+
+    # Verify that the response status code matches the expected code
     assert response.status_code == expected
 
 
 def test_create_product(user, product, mocker):
+    """
+    Test function to create a product using an authenticated user.
+
+    @param user: The User object that will be authenticated.
+    @param product: The Product object to be created.
+    @param mocker: The mocker object to patch the ProductAdminOnly permission class.
+    @return: None
+    """
+    # Create a test client and authenticate the user
     client = APIClient()
     client.force_authenticate(user=user)
+
     data = {
         "sku": product.sku,
         "name": product.name,
@@ -131,13 +155,25 @@ def test_create_product(user, product, mocker):
     }
     expected_results = ProductSerializer(product).data
     expected = [status.HTTP_201_CREATED, expected_results]
+
+    # Patch the ProductAdminOnly permission class to return True
     mocker.patch("store.views.ProductAdminOnly.has_permission", return_value=True)
+
+    # Send a POST request to the 'products-list' endpoint with the product data
     response = client.post(reverse("products-list"), data=data)
     received = [response.status_code, response.data]
     assert expected == received
 
 
 def test_update_product(client, product, mocker):
+    """
+    Test function to update a product.
+
+    @param client: The Django test client object.
+    @param product: The Product object to be updated.
+    @param mocker: The mocker object to patch the ProductAdminOnly permission class and notify_update_product method.
+    @return: None
+    """
     data = {
         "name": "test name",
     }
@@ -148,27 +184,48 @@ def test_update_product(client, product, mocker):
         "brand": product.brand,
     }
     expected_results = expected_data
+
+    # Set the expected HTTP response code to 200 (OK) and the expected results
     expected = [status.HTTP_200_OK, expected_results]
+
+    # Send a PATCH request to the 'products-detail' endpoint with the product data
     mocker.patch("store.views.ProductAdminOnly.has_permission", return_value=True)
     notify_update_product = mocker.patch(
         "store.serializers.product_change_notification.delay"
     )
     response = client.patch(reverse("products-detail", args=(product.sku,)), data=data)
     received = [response.status_code, response.data]
+
+    # Verify that the expected and received results match
     assert expected == received
     assert notify_update_product.called
     notify_update_product.assert_called_with(product.sku)
 
 
 def test_delete_product(client, mocker):
+    """
+    Test function to delete a product.
+
+    @param client: The Django test client object.
+    @param mocker: The mocker object to patch the ProductAdminOnly permission class.
+    @return: None
+    """
     page_size = settings.REST_FRAMEWORK.get("PAGE_SIZE", 4)
     prod_list = ProductFactory.create_batch(page_size)
     prod_to_delete = prod_list[1]
     mocker.patch("store.views.ProductAdminOnly.has_permission", return_value=True)
+
+    # Send a DELETE request to the 'products-detail' endpoint with the product SKU
     response = client.delete(reverse("products-detail", args=(prod_to_delete.sku,)))
+
+    # Verify that the response status code is 204 (NO CONTENT)
     assert response.status_code == status.HTTP_204_NO_CONTENT
+
+    # Verify that the number of products in the database is reduced by one
     objects = set(Product.objects.all())
     assert len(objects) == 3
+
+    # Verify that the deleted product is no longer in the database
     prod_set = set(prod_list)
     prod_set.remove(prod_to_delete)
     assert prod_set == objects
